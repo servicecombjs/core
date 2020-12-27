@@ -9,6 +9,11 @@ var getKey = (object,value)=>{
     return targetKey
 }
 
+var isDOM  = (typeof HTMLElement === 'object') ?function (obj){
+return obj instanceof HTMLElement;} : function (
+obj){
+return obj && typeof obj === 'object' && ojb.nodeType === 1 &&  typeof obj.nodeName === 'string'}
+
 var englishObject = {
     'a': 'hello',
     'b': 'boy'
@@ -45,7 +50,13 @@ tables.forEach((table,item)=>{
     Object.keys(table).forEach((key)=>{
         let value = table[key]
         if (getKey(englishObject, value)) {
-            table[key] = chineseObject[getKey(englishObject, value)]
+            let valueTarget =  table[key]
+            if (isDOM(valueTarget)) {
+                valueTarget.innerText = chineseObject[getKey(englishObject, value)]
+            } else {
+                table[key] = chineseObject[getKey(englishObject, value)]
+            }
+            
         }
     }
     )
